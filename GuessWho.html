@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ghici Cine</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        .filter {
+            filter: grayscale(1);
+        }
+        figure{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div style="display: flex; justify-content: space-evenly; align-items: center;">
+    <div style="display: flex; align-items: center; flex-direction: column; justify-content: space-evenly; height: 100vh">
+        <button style="width: 60px; height: 40px; background-color: greenyellow; text-align: center"
+                id="startButton">Start
+        </button>
+        <div style="display: flex; flex-direction: column; align-items: center">
+            <label for="codeInput">Sau introdu codul de la celelalt jucator</label>
+            <input type="text" id="codeInput" />
+            <button style="width: 60px; height: 40px; background-color: greenyellow; text-align: center"
+                    id="inputCodeButton"> Start cu cod
+            </button>
+        </div>
+        <div>
+            <button style="width: 60px; height: 40px; background-color: greenyellow; text-align: center"
+                    id="chooseAgainButton">Alege alt om</button>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: space-evenly; flex-direction: column; align-items: center"
+         id="imagesDiv">
+    </div>
+    <div id="pickedImageDiv" style="visibility: hidden">
+        <p>Poza ta:</p>
+        <figure>
+            <img src="" id="pickedImage" style="width:150px; height:200px;">
+            <figcaption id="pickedImageCaption"></figcaption>
+        </figure>
+        <p>Codul pentru joc (da-l persoanei cu care joci):</p>
+        <p id="gameCode"></p>
+    </div>
+</div>
+<script>
+    let imageNames = ["Mario Simen", "Andreea Balaban", "Alex Alvarez", "Alin Zvinca", "Chifoi", "Vali", "Jasmine Saraj", "Maurice", "Eusebiu", "Andreea BAS",
+        "Raluca Badulescu", "Sanic", "Mo si FOCA", "Bendeac", "Dan Diaconescu", "Dan Negru", "Stresu", "Micky Hash", "Smiley", "CRBL", "Alex Velea", "Neti Sandu",
+        "Iohannis", "Anamaria Prodan", "Dorian Popa", "Spiridusul", "Loredana Groza", "RuPaul", "Dana Budeanu", "Ozana Barabancea", "Catalin Maruta",
+        "Tzanca Uraganu", "Andreea Tonciu", "CTP", "Cotofana", "Faiar", "Cristina Ich", "Bahoi", "Buhnici", "Cetateanul Frantuzit", "Adrian Mutu",
+        "Miky Neamtu", "Cocolinostar", "Viorel Lis", "Puya", "Delia", "Catalin Scarlatescu", "Becali", "James Charles", "Enceanu", "Samurai Jack",
+        "Nancy de la 402", "Tom si Jerry", "Ed Edd si Eddy", "Freddy Fazzbear", "Barbie", "Mojo Jojo", "Dexter", "Bugs Bunny"]
+    let images = {
+            "Mario Simen": "https://i.imgur.com/qe8HgTC.png",
+            "Andreea Balaban": "https://i.imgur.com/VRyWVre.jpg",
+            "Alex Alvarez": "https://i.imgur.com/WEz6Ip2.png",
+            "Alin Zvinca": "https://i.imgur.com/Tr7crVI.png",
+            "Chifoi": "https://i.imgur.com/lm9ZdKs.png",
+            "Vali": "https://i.imgur.com/ryrUnL6.png",
+            "Jasmine Saraj": "https://i.imgur.com/rGLHLTb.png",
+            "Maurice": "https://i.imgur.com/yQZn6dT.png",
+            "Eusebiu": "https://i.imgur.com/T19g8p1.png",
+            "Andreea BAS": "https://i.imgur.com/dFArEmo.png",
+            "Raluca Badulescu": "https://i.imgur.com/uhGCzTJ.png",
+            "Sanic": "https://i.imgur.com/VQCkZVd.png",
+            "Mo si FOCA": "https://i.imgur.com/lk7kzru.png",
+            "Bendeac": "https://i.imgur.com/q8bohvp.png",
+            "Dan Diaconescu": "https://i.imgur.com/fYFEkEH.png",
+            "Dan Negru": "https://i.imgur.com/xRW5lOo.png",
+            "Stresu": "https://i.imgur.com/sraUdla.png",
+            "Micky Hash": "https://i.imgur.com/YOGsgxY.png",
+            "Smiley": "https://i.imgur.com/MYEfhwc.png",
+            "CRBL": "https://i.imgur.com/9XzilbQ.png",
+            "Alex Velea": "https://i.imgur.com/y9BdgwQ.png",
+            "Neti Sandu": "https://i.imgur.com/UhSjUyd.png",
+            "Iohannis": "https://i.imgur.com/Iac4C1T.png",
+            "Anamaria Prodan": "https://i.imgur.com/K8cocgF.jpg",
+            "Dorian Popa": "https://i.imgur.com/yi9UNcI.jpg",
+            "Spiridusul": "https://i.imgur.com/1tPWkue.png",
+            "Loredana Groza": "https://i.imgur.com/FbtehwE.png",
+            "RuPaul": "https://i.imgur.com/Kez5cZZ.png",
+            "Dana Budeanu": "https://i.imgur.com/bzOMuWo.png",
+            "Ozana Barabancea": "https://i.imgur.com/8U43Csh.png",
+            "Catalin Maruta": "https://i.imgur.com/8aREaw3.png",
+            "Tzanca Uraganu": "https://i.imgur.com/0bfn6zq.png",
+            "Andreea Tonciu": "https://i.imgur.com/sq08yOv.png",
+            "CTP": "https://i.imgur.com/EKt2gGi.png",
+            "Cotofana": "https://i.imgur.com/60Ffe2a.png",
+            "Faiar": "https://i.imgur.com/Vjc7ViC.png",
+            "Cristina Ich": "https://i.imgur.com/E6bBKuD.png",
+            "Bahoi": "https://i.imgur.com/2N8a6Gu.png",
+            "Buhnici": "https://i.imgur.com/v5JZ1VE.png",
+            "Cetateanul Frantuzit": "https://i.imgur.com/LUa1IYK.png",
+            "Adrian Mutu": "https://i.imgur.com/xquErd4.png",
+            "Miky Neamtu": "https://i.imgur.com/Whkizpj.png",
+            "Cocolinostar": "https://i.imgur.com/8fiLLTt.jpg",
+            "Viorel Lis": "https://i.imgur.com/gulZ9RD.png",
+            "Puya": "https://i.imgur.com/0MGUt9n.png",
+            "Delia": "https://i.imgur.com/4Exw9lQ.png",
+            "Catalin Scarlatescu": "https://i.imgur.com/wrBJG2g.png",
+            "Becali": "https://i.imgur.com/CwpfhZT.png",
+            "James Charles": "https://i.imgur.com/VBbdQc6.png",
+            "Enceanu": "https://i.imgur.com/iUyutgk.png",
+            "Samurai Jack": "https://i.imgur.com/iedh1yX.png",
+            "Nancy de la 402": "https://i.imgur.com/Mc1xiNA.png",
+            "Tom si Jerry": "https://i.imgur.com/C5XH74G.png",
+            "Ed Edd si Eddy": "https://i.imgur.com/UxyAIDh.png",
+            "Freddy Fazzbear": "https://i.imgur.com/qiD0I5V.png",
+            "Barbie": "https://i.imgur.com/86klTTi.png",
+            "Mojo Jojo": "https://i.imgur.com/txhaPEm.png",
+            "Dexter": "https://i.imgur.com/GoCXCZ7.png",
+            "Bugs Bunny": "https://i.imgur.com/rnSKGtg.png"
+        };
+    $("#startButton").click(function () {
+        let randomPositions = generateRandomListPositions(imageNames.length, 24);
+        let generatedCode = generateCode(randomPositions, imageNames.length);
+        let randomPositionsNumberRepresentation = convertToNumberRepresentation(randomPositions);
+        $("#gameCode").text(generatedCode);
+        $("#imagesDiv").empty();
+        $("#inputCodeButton").val("");
+        populatePicturesFromPickedList(randomPositionsNumberRepresentation);
+    });
+    $("#inputCodeButton").click(function () {
+        let code = $("#codeInput").val();
+        let randomPositions = getPositionsFromCode(code);
+        $("#gameCode").text(code);
+        $("#imagesDiv").empty();
+        $("#inputCodeButton").val("");
+        populatePicturesFromPickedList(randomPositions);
+    });
+    $("#chooseAgainButton").click(function () {
+        let code = $("#gameCode").text();
+        let randomPositions = getPositionsFromCode(code);
+        let pickedImage = imageNames[randomPositions[Math.floor(Math.random() * randomPositions.length)]]
+        $("#pickedImage").attr('src', images[pickedImage]);
+        $('#pickedImageCaption').text(pickedImage);
+    })
+    function populatePicturesFromPickedList(picturePositions) {
+        for (let i = 0; i < 4; i++) {
+            let imageDiv = 'imgDiv' + i;
+            $("#imagesDiv").append($('<div>').attr('id', imageDiv)
+                .attr('style', 'display: flex; justify-content: space-evenly; width:100%; margin:2px'));
+            for (let j = 0; j < 6; j++) {
+                $('#' + imageDiv).append($('<figure>').append($('<img>').attr('id', 'img' + i + j)
+                    .attr('style', 'width:150px; height:200px;')
+                    .attr('src', images[imageNames[picturePositions[i * 6 + j]]])
+                    .attr('class', 'contestImage')
+                    .click(function () {
+                        $(this).toggleClass('filter')
+                    }))
+                    .append('<figcaption>' + imageNames[picturePositions[i*6+j]] + '</figcaption>')
+                )
+            }
+        }
+        let pickedImage = imageNames[picturePositions[Math.floor(Math.random() * picturePositions.length)]]
+        $("#pickedImage").attr('src', images[pickedImage]);
+        $('#pickedImageCaption').text(pickedImage);
+        $('#pickedImageDiv').css('visibility', 'visible');
+    }
+    function generateRandomListPositions(listSize, randomCount) {
+        let generatedPositionsCount = 0;
+        let generatedPositions = [];
+        for (let i = 0; i < listSize; i++) {
+            generatedPositions.push(0);
+        }
+        while (generatedPositionsCount < randomCount) {
+            let randomPosition = Math.floor(Math.random() * listSize);
+            if (generatedPositions[randomPosition] === 0) {
+                generatedPositions[randomPosition] = 1;
+                generatedPositionsCount++;
+            }
+        }
+        return generatedPositions;
+    }
+    function convertToNumberRepresentation(indexes) {
+        let positions = [];
+        for (let i = 0; i < indexes.length; i++) {
+            if (indexes[i] === 1) {
+                positions.push(i);
+            }
+        }
+        return positions;
+    }
+    function generateCode(selectedIndexes, indexCount) {
+        let code = "";
+        let i = 0;
+        while (i < indexCount) {
+            let currentNumber = 0;
+            for (let j = 0; j < 3 && i < indexCount; j++) {
+                if (selectedIndexes[i] === 1) {
+                    currentNumber += Math.pow(2, j);
+                }
+                i++;
+            }
+            code += currentNumber.toString();
+        }
+        return code;
+    }
+    function getPositionsFromCode(code) {
+        let positions = [];
+        for (let i = 0; i < code.length; i++) {
+            let currentNumber = parseInt(code.charAt(i));
+            let currentNumberArray = [];
+            for (let j = 2; j >= 0; j--) {
+                if (currentNumber >= Math.pow(2, j)) {
+                    currentNumberArray.push(i * 3 + j);
+                    currentNumber -= Math.pow(2, j);
+                }
+            }
+            positions = positions.concat(currentNumberArray);
+        }
+        return positions;
+    }
+
+</script>
+</body>
+</html>
