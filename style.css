@@ -1,0 +1,67 @@
+figure {
+    margin: 0 0 0 0;
+    width: 16%;
+}
+
+.filter {
+    filter: grayscale(1);
+}
+
+.side-div {
+    width: 20%;
+}
+
+.center-div {
+    width: 60%;
+}
+
+.code-div label, .code-div input, .code-div button{
+    margin: 2px;
+}
+
+.center-align-div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.column-center-align-div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.full-screen-height {
+    height: 100vh;
+}
+
+.wrapper {
+    position:relative;
+    height: 200px;
+}
+
+.contest-image, .cross-image{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.standard-image-size {
+    width: 150px;
+    height: 200px;
+}
+
+.hidden-image {
+    visibility: hidden;
+}
+
+.checkbox-div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+}
