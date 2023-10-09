@@ -234,8 +234,23 @@ function convertToNumberRepresentation(indexes) {
             positions.push(i);
         }
     }
-    return positions;
+
+    return shuffle(positions);
 }
+
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
+
+    while (currentIndex > 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
 function generateCode(selectedIndexes, indexCount) {
     let code = "";
     let i = 0;
@@ -264,7 +279,7 @@ function getPositionsFromCode(code) {
         }
         positions = positions.concat(currentNumberArray);
     }
-    return positions;
+    return shuffle(positions);
 }
 
 function computePossibleImagePicks() {
